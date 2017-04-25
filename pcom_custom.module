@@ -55,7 +55,7 @@ function pcom_custom_node_submit($node) {
 			$title1 = $node->title;
 		}
 			
-		$title = $title1.' '.format_date(strtotime($node->field_date['und'][0]['value']), 'custom', 'F d, Y');
+		$title = $title1.' - '.format_date(strtotime($node->field_date['und'][0]['value']), 'custom', 'F d, Y');
  		$node->title = $title; 
   }
 }
