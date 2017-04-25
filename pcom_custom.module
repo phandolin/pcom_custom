@@ -7,7 +7,6 @@
 /*Updates Proximity Search to only include Miles and KM*/
 
 function pcom_custom_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
-dpm($form);
   if (isset($form['field_geofield_distance_1'])) {
     // $existing =
     $form['field_geofield_distance_1']['#process'] = array(
@@ -48,7 +47,7 @@ function pcom_custom_form_alter(&$form, &$form_state, $form_id) {
 /* For events we want to append the date to the end of the title (and remove 'Clone of' if applicable) upon node submit */
 
 function pcom_custom_node_submit($node) {
-	if ($node->type == 'event') {	
+	if ($node->type == 'event') {
 		if (strpos($node->title, 'Clone of') !== FALSE) {
 			$title1 = str_replace('Clone of ', '', $node->title);
 		}
@@ -63,9 +62,21 @@ function pcom_custom_node_submit($node) {
 
 /* Insert metatag for event views. */
 
-funcion pcom_custom_preprocess_html(&$variables) {
-	dpm($variables);
-	
-	
-	
+function pcom_custom_views_pre_view(&$view, &$display_id, &$args) {
+	//dpm($view);
+	if($view->name == 'articles' && $view->current_display == 'blog') {
+		//dpm($view);
+		$metainsert = "Here is a list of Pacific College blog posts from ".$view->args[2]." ".$view->args[1]."-".$view->args[0]." Click here to see what was published during this time.";
+		$element = array(
+		'#type' => 'html_tag',
+		'#tag' => 'meta', // The #tag is the html tag - 
+		'#attributes' => array( // Set up an array of attributes inside the tag
+			'name' => 'description', 
+			'content' => $metainsert
+  )
+);
+drupal_add_html_head($element, 'metainstert');
+		
+	}
+
 }
