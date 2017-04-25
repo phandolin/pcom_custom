@@ -26,33 +26,26 @@ function pcom_custom_proximity_element_process($element, &$form_state, $form) {
 
 /* End of Proximity search fix */
 
-// function pcom_custom_taxonomy_term_update($term) {
-	// dpm(debug_backtrace());
-// }
 
 /* This fixes the Featured Media taxonomy/images on basic pages */
 function pcom_custom_form_alter(&$form, &$form_state, $form_id) {
-if($form['#form_id']=='page_node_form' && $form['type']['#value']=='page') {
-//dpm($form);
-$Nasdfasdf=node_load($form['nid']['#value']);
+	if($form['#form_id']=='page_node_form' && $form['type']['#value']=='page') {
 
-$Poop=$Nasdfasdf->field_featured['und'][0]['tid'];
-
-$form['field_featured']['und']['#default_value'][0]=$Poop;
-
-$vocabulary = taxonomy_vocabulary_machine_name_load('featured_media');
-$terms = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
-	$termdeets=array();
+		$Nasdfasdf=node_load($form['nid']['#value']);
+		$Poop=$Nasdfasdf->field_featured['und'][0]['tid'];
+		$form['field_featured']['und']['#default_value'][0]=$Poop;
+		$vocabulary = taxonomy_vocabulary_machine_name_load('featured_media');
+		$terms = entity_load('taxonomy_term', FALSE, array('vid' => $vocabulary->vid));
+		$termdeets=array();
 
 	foreach($terms as $termid => $termname) {
 		$termdeets[$termid]=$termname->name;
 	}
-//	dpm($termdeets);
 	$form['field_featured']['und']['#options']=$termdeets;
 }
 }
 
-// For events we want to append the date to the end of the title upon save
+/* For events we want to append the date to the end of the title (and remove 'Clone of' if applicable) upon node submit */
 
 function pcom_custom_node_submit($node) {
 	if ($node->type == 'event') {	
@@ -63,10 +56,7 @@ function pcom_custom_node_submit($node) {
 			$title1 = $node->title;
 		}
 			
-		$title = $title1.' '.format_date(strtotime($node->field_date['und'][0]['value']), 'custom', 'F d, Y');//.$node->field_date['und'][0]['value'];
-
- 		$node->title = $title; //t('!title !date', array('!title' => $node->title), array('!date' => $node->field_date['und'][0]['value']));
-		
-    //pcom_custom_set_title($title);
+		$title = $title1.' '.format_date(strtotime($node->field_date['und'][0]['value']), 'custom', 'F d, Y');
+ 		$node->title = $title; 
   }
 }
