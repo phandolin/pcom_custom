@@ -60,3 +60,12 @@ function pcom_custom_node_submit($node) {
  		$node->title = $title; 
   }
 }
+
+/* Insert metatag for event views. */
+
+funcion pcom_custom_preprocess_html($variables) {
+	dpm($variables);
+	
+	
+	
+}
